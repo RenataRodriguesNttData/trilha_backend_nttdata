@@ -1,0 +1,9 @@
+br\com\financys\entities\Entry.class
+br\com\financys\repository\EntryBD.class
+br\com\financys\config\SweggerConfig.class
+br\com\financys\entities\Product.class
+br\com\financys\entities\Category.class
+br\com\financys\FinancysApplication.class
+br\com\financys\controller\CategoryController.class
+br\com\financys\controller\EntryController.class
+br\com\financys\repository\CategoryBD.class
