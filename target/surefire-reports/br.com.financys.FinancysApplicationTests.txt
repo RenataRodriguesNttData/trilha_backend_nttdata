@@ -1,0 +1,9 @@
+-------------------------------------------------------------------------------
+Test set: br.com.financys.FinancysApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 12.218 s <<< FAILURE! - in br.com.financys.FinancysApplicationTests
+contextLoads  Time elapsed: 0.02 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is org.hibernate.AnnotationException: Property br.com.financys.entities.Category.description has an unbound type and no explicit target entity. Resolve this Generic usage issue or set an explicit target attribute (eg @OneToMany(target=) or use an explicit @Type
+Caused by: org.hibernate.AnnotationException: Property br.com.financys.entities.Category.description has an unbound type and no explicit target entity. Resolve this Generic usage issue or set an explicit target attribute (eg @OneToMany(target=) or use an explicit @Type
+
