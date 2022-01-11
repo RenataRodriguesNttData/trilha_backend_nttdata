@@ -1,14 +1,41 @@
 package entities;
 
+import com.github.dreamyoung.mprelation.JoinColumn;
+import com.github.dreamyoung.mprelation.ManyToOne;
+
 public class Entry {
 
+    @ManyToOne
+    @JoinColumn(name = "id", referencedColumnName = "Entry", nullable = true)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "name", referencedColumnName = "Entry", nullable = true)
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "description", referencedColumnName = "Entry", nullable = true)
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "type", referencedColumnName = "Entry", nullable = true)
     private String type;
+
+    @ManyToOne
+    @JoinColumn(name = "amount", referencedColumnName = "Entry", nullable = true)
     private String amount;
+
+    @ManyToOne
+    @JoinColumn(name = "date", referencedColumnName = "Entry", nullable = true)
     private String date;
+
+    @ManyToOne
+    @JoinColumn(name = "paid", referencedColumnName = "Entry", nullable = true)
     private boolean paid;
+
+
+    @ManyToOne
+    @JoinColumn(name = "categoryId", referencedColumnName = "Entry", nullable = true)
     private long categoryId;
 
     public Entry() {

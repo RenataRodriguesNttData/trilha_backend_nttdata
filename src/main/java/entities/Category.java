@@ -1,11 +1,22 @@
 package entities;
-public class Category{
 
+import com.github.dreamyoung.mprelation.JoinColumn;
+import com.github.dreamyoung.mprelation.ManyToOne;
+
+public class Category {
+
+    @ManyToOne
+    @JoinColumn(name = "id", referencedColumnName = "Category", nullable = true)
     private static Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "name", referencedColumnName = "Category", nullable = true)
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "description", referencedColumnName = "Category", nullable = true)
     private String description;
+
 
     public Category() {
     }
