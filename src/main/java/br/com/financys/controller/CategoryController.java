@@ -78,7 +78,7 @@ public class CategoryController {
     {
         if(Category.isPresent())
         model.addAttribute(list());
-        return "pessoa/listaPessoa";
+        return "listaCategorias";
     }
 
     @RequestMapping("editarCategoria")

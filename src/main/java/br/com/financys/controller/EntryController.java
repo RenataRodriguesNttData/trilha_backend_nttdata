@@ -1,6 +1,7 @@
 package br.com.financys.controller;
 
 
+import br.com.financys.entities.Category;
 import br.com.financys.repository.EntryRepository;
 import com.zaxxer.hikari.pool.HikariProxyCallableStatement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import br.com.financys.entities.Entry;
 
 import javax.swing.*;
 import java.util.List;
+
+import static com.sun.tools.attach.VirtualMachine.list;
 
 
 @RestController
@@ -68,6 +71,16 @@ public class EntryController {
         entryRepository.deleteById(id);
     }
 
+
+    @GetMapping("/validaçãoIdLancamento")
+    public ResponseEntity<?> getAudioDetails(@PathVariable("Id") String Id,@PathVariable("lancamentoId") String lancamentoId,
+       @RequestParam(name = "paid", required = true, defaultValue = "false") boolean LancamentoId){
+
+        System.out.println(lancamentoId);
+
+        return null;
+    }
+
     @RequestMapping(value="adicionarLancamento",method= RequestMethod.POST)
     public void category(@RequestParam("nome") String nome,
                          @RequestParam("id") String id,
@@ -87,7 +100,15 @@ public class EntryController {
 
 
     @RequestMapping("/listaLancamentos")
-    public String listaLancamentos(Model model, HikariProxyCallableStatement list)
+    public String listaLancamento(Model model)
+    {
+        if(Entry.isPresent())
+            model.addAttribute(list());
+        return "ListaLancamento";
+    }
+
+    @RequestMapping("/listaLancamentosPagos")
+    public String listaLancamentosPagos(Model model, HikariProxyCallableStatement list)
     {
         String resultado = null;
         String h2 = "SELECT * FROM USUARIO";
