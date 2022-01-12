@@ -1,8 +1,8 @@
 package br.com.financys.controller;
 
 
-import br.com.financys.entities.Category;
 import br.com.financys.repository.EntryRepository;
+import com.zaxxer.hikari.pool.HikariProxyCallableStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -11,11 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import br.com.financys.entities.Entry;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.swing.*;
 import java.util.List;
 
-import static com.sun.tools.attach.VirtualMachine.list;
 
 @RestController
 @RequestMapping("/entries")
@@ -89,12 +87,28 @@ public class EntryController {
 
 
     @RequestMapping("/listaLancamentos")
-    public String listaLancamentos(Model model)
+    public String listaLancamentos(Model model, HikariProxyCallableStatement list)
     {
-        if(Entry.isPresent())
-            model.addAttribute(list());
-        return "pessoa/listaPessoa";
+        String resultado = null;
+        String h2 = "SELECT * FROM USUARIO";
+        try {
+            String paid = null;
+            if (list == null) {
+                resultado = (list.getString(1)+";"+list.getString(2)+";"+list.getString(3)+";"+list.getString(4));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        System.out.println(resultado);
+
+        return resultado;
     }
+
+    @DeleteMapping("/deleteLancamento")
+    public void lancamento(@RequestParam("lancamento") String Lancamento) {
+        entryRepository.deleteById(Long.valueOf(Lancamento));
+    }
+
 
 
 }
