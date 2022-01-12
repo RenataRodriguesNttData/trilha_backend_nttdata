@@ -93,7 +93,10 @@ public class CategoryController {
         return null;
     }
 
-
+    @DeleteMapping("/deleteCategoria")
+    public void categoria(@RequestParam("categoria") String Categoria) {
+        categoryrepository.deleteById(Long.valueOf(Categoria));
+    }
 
 }
 

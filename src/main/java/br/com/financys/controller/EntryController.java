@@ -96,6 +96,10 @@ public class EntryController {
         return "pessoa/listaPessoa";
     }
 
+    @DeleteMapping("/deleteLancamento")
+    public void lancamento(@RequestParam("lancamento") String Lancamento) {
+        entryRepository.deleteById(Long.valueOf(Lancamento));
+    }
 
 }
 
