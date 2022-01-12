@@ -54,6 +54,10 @@ public class Entry {
         this.category = category;
     }
 
+    public static boolean isPresent() {
+        return false;
+    }
+
     public Long getId() {
         return id;
     }
