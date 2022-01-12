@@ -5,17 +5,25 @@ import br.com.financys.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.sun.tools.attach.VirtualMachine.list;
 
 
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
 
-    @Autowired
+
     private CategoryRepository categoryrepository;
+
+    @Autowired
+    public CategoryController(CategoryRepository categoryrepository) {
+        this.categoryrepository = categoryrepository;
+    }
 
     @GetMapping
     public List<Category> readCategory(){
@@ -31,9 +39,10 @@ public class CategoryController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Category createCategory(@RequestBody Category category){
+    public Category createCategory(Category category){
         return categoryrepository.save(category);
     }
+
 
     @PutMapping(value="/update/{id}")
     public ResponseEntity update(@PathVariable("id") Long id,@RequestBody Category category) {
@@ -52,7 +61,37 @@ public class CategoryController {
         categoryrepository.deleteById(id);
     }
 
+    @RequestMapping(value="adicionarCategoria",method= RequestMethod.POST)
+    public void category(@RequestParam("nome") String nome,
+                         @RequestParam("id") String id,
+                         @RequestParam("description") String description) {
+        Category category = null;
+        if (Category.isPresent()) {
+        }category = new Category();
+        category.setId(category.getId());
+        category.setName(category.getName());
+        category.setDescription(category.getDescription());
+    }
 
+    @RequestMapping("/listaCategoria")
+    public String listaCategoria(Model model)
+    {
+        if(Category.isPresent())
+        model.addAttribute(list());
+        return "pessoa/listaPessoa";
+    }
+
+    @RequestMapping("editarCategoria")
+    public String alterarPessoa(Long id, Model model)
+    {
+        if(Category.isPresent())
+        model.addAttribute(getClass(id));
+        return "editarCategoria";
+    }
+
+    private Object getClass(Long id) {
+        return null;
+    }
 
 
 

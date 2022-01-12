@@ -1,45 +1,48 @@
 package br.com.financys.entities;
 
+
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+
 
 @Table(name = "ENTRY")
 @Entity
-public class Entry implements List<Entry> {
+public class Entry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(nullable = false)
     private Long id;
 
-    @Column(name = "name")
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "description")
+    @Column(nullable = false)
     private String description;
 
-    @Column(name = "type")
+    @Column(nullable = false)
     private String type;
 
-    @Column(name = "amount")
+    @Column(nullable = false)
     private String amount;
 
-    @Column(name = "date")
+    @Column(nullable = false)
     private String date;
 
-    @Column(name = "paid")
+    @Column(nullable = false)
     private boolean paid;
 
-    @Column(name = "categoryId")
+    @Column(nullable = false)
     private Long categoryId;
+
+    @ManyToOne
+    @JoinColumn(name = "category")
+    private Category category;
+
 
     public Entry() {
     }
 
-    public Entry(Long id, String name, String description, String type, String amount, String date, boolean paid, long categoryId) {
+    public Entry(Long id, String name, String description, String type, String amount, String date, boolean paid, Long categoryId, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -48,6 +51,11 @@ public class Entry implements List<Entry> {
         this.date = date;
         this.paid = paid;
         this.categoryId = categoryId;
+        this.category = category;
+    }
+
+    public static boolean isPresent() {
+        return false;
     }
 
     public Long getId() {
@@ -106,128 +114,22 @@ public class Entry implements List<Entry> {
         this.paid = paid;
     }
 
-    public long getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(long categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
-    @Override
-    public int size() {
-        return 0;
+    public Category getCategory() {
+        return category;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return false;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    @Override
-    public boolean contains(Object o) {
-        return false;
-    }
-
-    @Override
-    public Iterator<Entry> iterator() {
-        return null;
-    }
-
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
-    }
-
-    @Override
-    public boolean add(Entry entry) {
-        return false;
-    }
-
-    @Override
-    public boolean remove(Object o) {
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends Entry> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(int index, Collection<? extends Entry> c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public Entry get(int index) {
-        return null;
-    }
-
-    @Override
-    public Entry set(int index, Entry element) {
-        return null;
-    }
-
-    @Override
-    public void add(int index, Entry element) {
-
-    }
-
-    @Override
-    public Entry remove(int index) {
-        return null;
-    }
-
-    @Override
-    public int indexOf(Object o) {
-        return 0;
-    }
-
-    @Override
-    public int lastIndexOf(Object o) {
-        return 0;
-    }
-
-    @Override
-    public ListIterator<Entry> listIterator() {
-        return null;
-    }
-
-    @Override
-    public ListIterator<Entry> listIterator(int index) {
-        return null;
-    }
-
-    @Override
-    public List<Entry> subList(int fromIndex, int toIndex) {
-        return null;
-    }
 
 
 }

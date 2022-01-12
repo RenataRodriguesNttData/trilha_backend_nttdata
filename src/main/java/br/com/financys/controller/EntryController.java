@@ -1,15 +1,21 @@
 package br.com.financys.controller;
 
 
+import br.com.financys.entities.Category;
 import br.com.financys.repository.EntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import br.com.financys.entities.Entry;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.List;
+
+import static com.sun.tools.attach.VirtualMachine.list;
 
 @RestController
 @RequestMapping("/entries")
@@ -17,8 +23,12 @@ import java.util.List;
 
 public class EntryController {
 
-    @Autowired
     private EntryRepository entryRepository;
+
+    @Autowired
+    public EntryController(EntryRepository entryRepository) {
+        this.entryRepository = entryRepository;
+    }
 
     @GetMapping
     public List<Entry> readEntry(){
@@ -60,6 +70,31 @@ public class EntryController {
         entryRepository.deleteById(id);
     }
 
+    @RequestMapping(value="adicionarLancamento",method= RequestMethod.POST)
+    public void category(@RequestParam("nome") String nome,
+                         @RequestParam("id") String id,
+                         @RequestParam("description") String description,
+                         @RequestParam("amount") String amount,
+                         @RequestParam("date") String date,
+                         @RequestParam("paid") boolean paid,
+                         @RequestParam("categoryId") Long categoryId,
+                         @RequestParam("type") String type ) {
+        if (Entry.isPresent()) {
+        }
+        Entry entry = new Entry();
+        entry.setId(entry.getId());
+        entry.setName(entry.getName());
+        entry.setDescription(entry.getDescription());
+    }
+
+
+    @RequestMapping("/listaLancamentos")
+    public String listaLancamentos(Model model)
+    {
+        if(Entry.isPresent())
+            model.addAttribute(list());
+        return "pessoa/listaPessoa";
+    }
 
 
 }

@@ -1,6 +1,9 @@
 package br.com.financys.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "category")
 @Entity
@@ -9,14 +12,17 @@ public class Category{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(name = "description")
+    @Column(nullable = false, length = 100)
     private String description;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    private List<Entry> entries;
 
     public Category() {
     }
@@ -25,6 +31,10 @@ public class Category{
         this.id = id;
         this.name = name;
         this.description = description;
+    }
+
+    public static boolean isPresent() {
+        return false;
     }
 
     public Long getId() {
@@ -49,5 +59,17 @@ public class Category{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Entry> getEntries() {
+        return entries;
+    }
+
+    public void setEntries(List<Entry> entries) {
+        this.entries = entries;
+    }
+
+    public void persistir() {
+        this.persistir();
     }
 }
