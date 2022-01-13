@@ -1,21 +1,17 @@
 package br.com.financys.controller;
 
-
-import br.com.financys.entities.Category;
 import br.com.financys.repository.EntryRepository;
-import com.zaxxer.hikari.pool.HikariProxyCallableStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.*;
 import br.com.financys.entities.Entry;
 
-import javax.swing.*;
-import java.util.List;
 
-import static com.sun.tools.attach.VirtualMachine.list;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -31,106 +27,65 @@ public class EntryController {
         this.entryRepository = entryRepository;
     }
 
-    @GetMapping
-    public List<Entry> readEntry(){
-        return entryRepository.findAll();
-    }
-    @GetMapping(path = {"/{id}"})
-    public ResponseEntity findById(@PathVariable Long id){
-        return entryRepository.findById(id)
-                .map(record -> ResponseEntity.ok().body(record))
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Entry createEntry(@RequestBody Entry entry){
+    public Entry create(@RequestBody Entry entry){
         return entryRepository.save(entry);
     }
 
-    @PutMapping(value="/update/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id,@RequestBody Entry entry) {
-        return entryRepository.findById(id)
-                .map(record -> {
-                    record.setName(entry.getName());
-                    record.setId(entry.getId());
-                    record.setDescription(entry.getDescription());
-                    record.setType(entry.getType());
-                    record.setAmount(entry.getAmount());
-                    record.setDate(entry.getDate());
-                    record.setPaid(entry.getPaid());
-                    record.setCategoryId(entry.getCategoryId());
-                    Entry updated = entryRepository.save(record);
-                    return ResponseEntity.ok().body(updated); })
-                .orElse(ResponseEntity.notFound().build());
-    }
+    @GetMapping("/read")
+    public List<Entry> findpersonByPaid(@RequestParam("paid") Long id) {
+        return this.entryRepository.findByPaidContains(id)
+                .stream()
+                .map(Entry::converter)
+                .collect(Collectors.toList());
 
-    @DeleteMapping("/delete/{id}")
-    public void entrydelete(@PathVariable("id") Long id) {
-        entryRepository.deleteById(id);
     }
 
 
-    @GetMapping("/validaçãoIdLancamento")
-    public ResponseEntity<?> getAudioDetails(@PathVariable("Id") String Id,@PathVariable("lancamentoId") String lancamentoId,
-       @RequestParam(name = "paid", required = true, defaultValue = "false") boolean LancamentoId){
+    @GetMapping("/List")
+    public List<Entry> findPersonByCustom(
+            @RequestParam(value = "id", required = false) Long id,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "type", required = false) String type,
+            @RequestParam(value = "amount", required = false) String amount,
+            @RequestParam(value = "date", required = false) String date,
+            @RequestParam(value = "paid", required = false) boolean paid,
+            @RequestParam(value = "categoryId", required = false) Long categoryId
 
-        System.out.println(lancamentoId);
-
-        return null;
-    }
-
-    @RequestMapping(value="adicionarLancamento",method= RequestMethod.POST)
-    public void category(@RequestParam("nome") String nome,
-                         @RequestParam("id") String id,
-                         @RequestParam("description") String description,
-                         @RequestParam("amount") String amount,
-                         @RequestParam("date") String date,
-                         @RequestParam("paid") boolean paid,
-                         @RequestParam("categoryId") Long categoryId,
-                         @RequestParam("type") String type ) {
-        if (Entry.isPresent()) {
-        }
-        Entry entry = new Entry();
-        entry.setId(entry.getId());
-        entry.setName(entry.getName());
-        entry.setDescription(entry.getDescription());
+    ) {
+        return this.entryRepository.find(id, name, description, type, amount, date, paid, categoryId )
+                .stream()
+                .map(Entry::converter)
+                .collect(Collectors.toList());
     }
 
 
-    @RequestMapping("/listaLancamentos")
-    public String listaLancamento(Model model)
-    {
-        if(Entry.isPresent())
-            model.addAttribute(list());
-        return "ListaLancamento";
-    }
-
-    @RequestMapping("/listaLancamentosPagos")
-    public String listaLancamentosPagos(Model model, HikariProxyCallableStatement list)
-    {
-        String resultado = null;
-        String h2 = "SELECT * FROM USUARIO";
-        try {
-            String paid = null;
-            if (list == null) {
-                resultado = (list.getString(1)+";"+list.getString(2)+";"+list.getString(3)+";"+list.getString(4));
+            @PutMapping(value = "/update/{id}")
+            public ResponseEntity update (@PathVariable("id") Long id, @RequestBody Entry entry){
+                return entryRepository.findById(id)
+                        .map(record -> {
+                            record.setName(entry.getName());
+                            record.setId(entry.getId());
+                            record.setDescription(entry.getDescription());
+                            record.setType(entry.getType());
+                            record.setAmount(entry.getAmount());
+                            record.setDate(entry.getDate());
+                            record.setPaid(entry.getPaid());
+                            record.setCategoryId(entry.getCategoryId());
+                            Entry updated = entryRepository.save(record);
+                            return ResponseEntity.ok().body(updated);
+                        })
+                        .orElse(ResponseEntity.notFound().build());
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+
+            @DeleteMapping("/delete/{id}")
+            public void entrydelete (@PathVariable("id") Long id){
+                entryRepository.deleteById(id);
+            }
+
         }
-        System.out.println(resultado);
-
-        return resultado;
-    }
-
-    @DeleteMapping("/deleteLancamento")
-    public void lancamento(@RequestParam("lancamento") String Lancamento) {
-        entryRepository.deleteById(Long.valueOf(Lancamento));
-    }
 
 
-
-}
 
