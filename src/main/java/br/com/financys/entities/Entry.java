@@ -31,18 +31,15 @@ public class Entry {
     @Column(nullable = false)
     private boolean paid;
 
-    @Column(nullable = false)
-    private Long categoryId;
-
     @ManyToOne
-    @JoinColumn(name = "category")
-    private Category category;
+    @JoinColumn(name = "categoryId", referencedColumnName = "Id")
+    private Category categoryId;
 
 
     public Entry() {
     }
 
-    public Entry(Long id, String name, String description, String type, String amount, String date, boolean paid, Long categoryId, Category category) {
+    public Entry(Long id, String name, String description, String type, String amount, String date, Boolean paid, Category categoryId ) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -51,7 +48,6 @@ public class Entry {
         this.date = date;
         this.paid = paid;
         this.categoryId = categoryId;
-        this.category = category;
     }
 
     public static boolean isPresent() {
@@ -114,20 +110,12 @@ public class Entry {
         this.paid = paid;
     }
 
-    public Long getCategoryId() {
+    public Category getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(Category categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
 

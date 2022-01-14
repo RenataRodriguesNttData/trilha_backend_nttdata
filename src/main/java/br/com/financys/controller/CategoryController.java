@@ -15,13 +15,9 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoryController {
 
-
+    @Autowired
     private CategoryRepository categoryRepository;
 
-    @Autowired
-    public CategoryController(CategoryRepository categoryrepository) {
-        this.categoryRepository = categoryrepository;
-    }
 
     @GetMapping("/read")
     public List<Category> readCategory() {
@@ -37,8 +33,7 @@ public class CategoryController {
 
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Category createCategory(Category category) {
+    public Category createCategory(@RequestBody Category category) {
         return categoryRepository.save(category);
     }
 

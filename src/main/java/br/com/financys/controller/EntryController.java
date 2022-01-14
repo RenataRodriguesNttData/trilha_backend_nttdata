@@ -1,9 +1,8 @@
 package br.com.financys.controller;
 
+import br.com.financys.entities.Category;
 import br.com.financys.repository.EntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +10,12 @@ import br.com.financys.entities.Entry;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 
 @RestController
 @RequestMapping("/entries")
-@SpringBootApplication
-
 public class EntryController {
 
     private EntryRepository entryRepository;
@@ -28,51 +26,48 @@ public class EntryController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Entry create(@RequestBody Entry entry){
-        return entryRepository.save(entry);
+    public Long createEntry(@RequestBody Entry entry) {
+        if (id != null )
+                return entryRepository.findById(id.equals("Id não encontrado"));
+        return entryRepository.save(entry).getId();
     }
 
-    @GetMapping("/readList")
-    public List<Entry> findAll() {
-        var entryList = entryRepository.findAll();
-        return entryList
-                .stream()
-                .map(Entry::converter)
-                .collect(Collectors.toList());
-    }
-    @GetMapping("/filter")
-    public List<Entry> findPersonByPaid(@RequestParam("paid") String paid) {
-        return this.entryRepository.findByPaidContains(Long.valueOf(paid))
-                .stream()
-                .map(Entry::converter)
-                .collect(Collectors.toList());
+    @GetMapping("/read/{id}")
+    public Entry findById(@PathVariable Long id) {
+        return entryRepository.findById(id).get();
     }
 
-            @PutMapping(value = "/update/{id}")
-            public ResponseEntity update (@PathVariable("id") Long id, @RequestBody Entry entry){
-                return entryRepository.findById(id)
-                        .map(record -> {
-                            record.setName(entry.getName());
-                            record.setId(entry.getId());
-                            record.setDescription(entry.getDescription());
-                            record.setType(entry.getType());
-                            record.setAmount(entry.getAmount());
-                            record.setDate(entry.getDate());
-                            record.setPaid(entry.getPaid());
-                            record.setCategoryId(entry.getCategoryId());
-                            Entry updated = entryRepository.save(record);
-                            return ResponseEntity.ok().body(updated);
-                        })
-                        .orElse(ResponseEntity.notFound().build());
-            }
+    @GetMapping
+    public List<Entry> findAll(@RequestParam(required = false) String paid) {
+        if (paid != null)
+            return entryRepository.findAllByPaid(paid.equalsIgnoreCase("pagos"));
+        return entryRepository.findAll();
+    }
 
-            @DeleteMapping("/delete/{id}")
-            public void entrydelete (@PathVariable("id") Long id){
-                entryRepository.deleteById(id);
-            }
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Entry entry) {
+        return entryRepository.findById(id)
+                .map(record -> {
+                    record.setName(entry.getName());
+                    record.setId(entry.getId());
+                    record.setDescription(entry.getDescription());
+                    record.setType(entry.getType());
+                    record.setAmount(entry.getAmount());
+                    record.setDate(entry.getDate());
+                    record.setPaid(entry.getPaid());
+                    record.setCategoryId(entry.getCategoryId());
+                    Entry updated = entryRepository.save(record);
+                    return ResponseEntity.ok().body(updated);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-        }
+    @DeleteMapping("/delete/{id}")
+    public void entrydelete(@PathVariable("id") Long id) {
+        entryRepository.deleteById(id);
+    }
+
+}
 
 
 

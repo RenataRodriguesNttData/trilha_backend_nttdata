@@ -21,7 +21,7 @@ public class Category{
     private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "categoryId",fetch = FetchType.LAZY)
     private List<Entry> entries;
 
     public Category() {
