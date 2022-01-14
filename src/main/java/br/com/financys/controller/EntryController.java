@@ -33,34 +33,21 @@ public class EntryController {
         return entryRepository.save(entry);
     }
 
-    @GetMapping("/read")
-    public List<Entry> findpersonByPaid(@RequestParam("paid") Long id) {
-        return this.entryRepository.findByPaidContains(id)
-                .stream()
-                .map(Entry::converter)
-                .collect(Collectors.toList());
-
-    }
-
-
-    @GetMapping("/List")
-    public List<Entry> findPersonByCustom(
-            @RequestParam(value = "id", required = false) Long id,
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "description", required = false) String description,
-            @RequestParam(value = "type", required = false) String type,
-            @RequestParam(value = "amount", required = false) String amount,
-            @RequestParam(value = "date", required = false) String date,
-            @RequestParam(value = "paid", required = false) boolean paid,
-            @RequestParam(value = "categoryId", required = false) Long categoryId
-
-    ) {
-        return this.entryRepository.find(id, name, description, type, amount, date, paid, categoryId )
+    @GetMapping("/readList")
+    public List<Entry> findAll() {
+        var entryList = entryRepository.findAll();
+        return entryList
                 .stream()
                 .map(Entry::converter)
                 .collect(Collectors.toList());
     }
-
+    @GetMapping("/filter")
+    public List<Entry> findPersonByPaid(@RequestParam("paid") String paid) {
+        return this.entryRepository.findByPaidContains(Long.valueOf(paid))
+                .stream()
+                .map(Entry::converter)
+                .collect(Collectors.toList());
+    }
 
             @PutMapping(value = "/update/{id}")
             public ResponseEntity update (@PathVariable("id") Long id, @RequestBody Entry entry){
