@@ -144,3 +144,18 @@ O Swagger permite criar a documentação da API de 3 formas: Automaticamente, ma
 -Update (atualizar) - atualizar os dados do registro;
 
 -Delete (apagar) - apagar um registro;
+
+
+
+
+#Desafio 5
+
+Letra a) 
+
+- Entity é responsável por transformar uma classe em entidade no projeto,além da JPA criar uma ligação entre a classe e uma tabela de mesmo nome para assim os objetos serem persistidos.
+
+- Controller é uma classe responsável pela preparação de um modelo de Map com dados a serem exibidos pela view e pela escolha da view correta. Basicamente ele é o responsável por controlar as requisições indicando quem deve receber as requisições para quem deve responde-las. Também pode mandar diretamente no fluxo do response usando a anotação @ResponseBody e concluir a solicitação.
+
+- Repository tem como objetivo criar beans para a parte de persistência, além de capturar exceções específicas de persistência e repeti-las novamente como uma das exceções não verificadas e unificadas do Spring.
+
+- Service seria uma (Interface) que nada mais é do que um contrato, ou seja uma regra que obriga a classe que irá implementar essa interface a usar os metodos definidos nela, ou seja (Service) tem um conjunto de metodos definidos, mais não implementados.
