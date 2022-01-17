@@ -1,6 +1,6 @@
 package br.com.financys.controller;
 
-import br.com.financys.entities.Category;
+import br.com.financys.repository.CategoryRepository;
 import br.com.financys.repository.EntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +18,18 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @RequestMapping("/entries")
 public class EntryController {
 
+    @Autowired
     private EntryRepository entryRepository;
 
     @Autowired
-    public EntryController(EntryRepository entryRepository) {
-        this.entryRepository = entryRepository;
-    }
+    private CategoryRepository categoryRepository;
 
     @PostMapping("/create")
-    public Long createEntry(@RequestBody Entry entry) {
-        if (id != null )
-                return entryRepository.findById(id.equals("Id não encontrado"));
-        return entryRepository.save(entry).getId();
+    public Entry createEntry(@RequestBody Entry entry) {
+        if (categoryRepository.findById(entry.getCategoryId().getId()).isPresent())
+            return entryRepository.save(entry);
+        System.out.println("Id não encontrado");
+        return  null;
     }
 
     @GetMapping("/read/{id}")

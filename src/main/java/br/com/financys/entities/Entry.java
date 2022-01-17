@@ -118,7 +118,6 @@ public class Entry {
         this.categoryId = categoryId;
     }
 
-
 }
 
 
