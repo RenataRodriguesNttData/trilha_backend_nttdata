@@ -18,39 +18,39 @@ import java.util.List;
 public class CategoryController {
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
 
     @PostMapping("/create")
     public ResponseEntity<Category> insert(@RequestBody Category category){
-        category = CategoryService.insert(category);
+        Category categoryReturn  = categoryService.insert(category);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(Category.getId()).toUri();
-        return ResponseEntity.created(uri).body(category);
+        return ResponseEntity.created(uri).body(categoryReturn);
     }
 
     @GetMapping
     public ResponseEntity<List<Category>> findAll(){
-        List<Category> list = CategoryService.findAll();
+        List<Category> list = categoryService.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Category> findById(@PathVariable Long Id){
-        Category idCategoryByName = CategoryService.findById(Id);
+        Category idCategoryByName = categoryService.findById(Id);
         return ResponseEntity.ok().body(idCategoryByName);
     }
 
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<Category> update(@PathVariable("id") Long id, @RequestBody Category category) {
-        CategoryService.updateCategory(category);
+        categoryService.updateCategory(category);
         return ResponseEntity.ok().body(category);
 
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long Id){
-        CategoryService.delete(Id);
+        categoryService.delete(Id);
         return ResponseEntity.noContent().build();
     }
 

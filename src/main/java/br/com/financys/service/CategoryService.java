@@ -4,9 +4,7 @@ import br.com.financys.entities.Category;
 import br.com.financys.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 
@@ -14,22 +12,20 @@ import java.util.List;
 public class CategoryService<categoryRepository> {
 
     @Autowired
-    private static CategoryRepository categoryRepository;
+    private  CategoryRepository categoryRepository;
 
 
 
-    public static List<Category> findAll(){
+    public  List<Category> findAll(){
         return categoryRepository.findAll();
     }
 
-    public List<Category> find(PageRequest PageRequest, String Name){
-        List<Category> list= categoryRepository.findIdCategoryByName(Name);
-        return categoryRepository.findIdCategoryByName(IdCategoryByName)
-                .map(record -> ResponseEntity.ok().body(record))
-                .orElse(ResponseEntity.notFound().build());
+    public Category find(PageRequest PageRequest, String name){
+        return categoryRepository.findByName(name);
+
     }
 
-    public static Category insert(Category category) {
+    public  Category insert(Category category) {
         return categoryRepository.save(category);
     }
 
@@ -39,19 +35,19 @@ public class CategoryService<categoryRepository> {
         return categoryRepository.save(entity);
     }
 
-    public static void updateCategory(Category entity) {
+    public void updateCategory(Category entity) {
         entity.setName(Category.getName());
         entity.setId(Category.getId());
         entity.setDescription(Category.getDescription());
 
     }
 
-    public static void delete(Long Id){
+    public  void delete(Long Id){
         categoryRepository.deleteById(Id);
     }
 
 
-    public static Category findById(Long id) {
+    public  Category findById(Long id) {
         return null;
     }
 
