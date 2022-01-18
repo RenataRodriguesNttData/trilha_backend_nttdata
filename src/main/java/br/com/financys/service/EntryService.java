@@ -28,12 +28,12 @@ import java.util.List;
 
         }
 
-        public Long validateCategoryById(@RequestParam(required = false) Long Id) {
-        if (Id != null)
-            return entryrepository.findById(Id.equals("Exist"));
-        return entryrepository.findById();
-    }
-
+        public Entry validateCategoryById(@RequestParam(required = false) Long Id, Entry entry) {
+            if (entryrepository.findById(entry.getCategoryId()).isPresent())
+                return entryrepository.save(entry);
+            System.out.println("Id não encontrado");
+            return  null;
+        }
 
          public Entry insert(Entry entry) {
             return entryrepository.save(entry);
@@ -70,6 +70,7 @@ import java.util.List;
         return null;
     }
 }
+
 
 
 

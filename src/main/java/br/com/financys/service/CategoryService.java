@@ -3,24 +3,30 @@ package br.com.financys.service;
 import br.com.financys.entities.Category;
 import br.com.financys.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class CategoryService{
+public class CategoryService<categoryRepository> {
 
     @Autowired
     private static CategoryRepository categoryRepository;
+
+
 
     public static List<Category> findAll(){
         return categoryRepository.findAll();
     }
 
-    public Category idCategoryByName(long Id) {
-        Optional<Category> id = Optional.ofNullable(CategoryRepository.findById(Id));
-        return id.get();
+    public List<Category> find(PageRequest PageRequest, String Name){
+        List<Category> list= categoryRepository.findIdCategoryByName(Name);
+        return categoryRepository.findIdCategoryByName(IdCategoryByName)
+                .map(record -> ResponseEntity.ok().body(record))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     public static Category insert(Category category) {
@@ -48,6 +54,8 @@ public class CategoryService{
     public static Category findById(Long id) {
         return null;
     }
+
+
 
 }
 

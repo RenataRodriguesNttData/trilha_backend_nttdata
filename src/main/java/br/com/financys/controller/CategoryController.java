@@ -25,7 +25,7 @@ public class CategoryController {
     public ResponseEntity<Category> insert(@RequestBody Category category){
         category = CategoryService.insert(category);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(category.getId()).toUri();
+                .buildAndExpand(Category.getId()).toUri();
         return ResponseEntity.created(uri).body(category);
     }
 
