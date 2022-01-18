@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 
 @Service
-public class CategoryService<categoryRepository> {
+public class CategoryService {
 
     @Autowired
     private  CategoryRepository categoryRepository;
@@ -35,10 +36,10 @@ public class CategoryService<categoryRepository> {
         return categoryRepository.save(entity);
     }
 
-    public void updateCategory(Category entity) {
-        entity.setName(Category.getName());
-        entity.setId(Category.getId());
-        entity.setDescription(Category.getDescription());
+    public void updateCategory(Category category) {
+        category.setName(category.getName());
+        category.setId(category.getId());
+        category.setDescription(category.getDescription());
 
     }
 

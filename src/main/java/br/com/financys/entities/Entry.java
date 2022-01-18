@@ -29,7 +29,7 @@ public class Entry {
     private String date;
 
     @Column(nullable = false)
-    private boolean paid;
+    private Boolean paid;
 
     @Column(nullable = false)
     private Long categoryId;
@@ -42,7 +42,7 @@ public class Entry {
     public Entry() {
     }
 
-    public Entry(Long id, String name, String description, String type, String amount, String date, boolean paid, Long categoryId, Category category) {
+    public Entry(Long id, String name, String description, String type, String amount, String date, Boolean paid, Long categoryId, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;

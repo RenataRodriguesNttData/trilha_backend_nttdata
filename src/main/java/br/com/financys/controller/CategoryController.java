@@ -2,7 +2,6 @@ package br.com.financys.controller;
 
 
 import br.com.financys.entities.Category;
-import br.com.financys.repository.CategoryRepository;
 import br.com.financys.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,7 @@ public class CategoryController {
     public ResponseEntity<Category> insert(@RequestBody Category category){
         Category categoryReturn  = categoryService.insert(category);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(Category.getId()).toUri();
+                .buildAndExpand(category.getId()).toUri();
         return ResponseEntity.created(uri).body(categoryReturn);
     }
 
@@ -53,8 +52,6 @@ public class CategoryController {
         categoryService.delete(Id);
         return ResponseEntity.noContent().build();
     }
-
-
 
 
 

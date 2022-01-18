@@ -7,21 +7,21 @@ import java.util.List;
 
 @Table(name = "category")
 @Entity
-public class Category{
+public class Category {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private static Long id;
+    private Long id;
 
-    @Column(nullable = false, length = 50)
-    private static String name;
+    @Column(nullable = false)
+    private String name;
 
-    @Column(nullable = false, length = 100)
-    private static String description;
+    @Column(nullable = false)
+    private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Entry> entries;
 
     public Category() {
@@ -33,11 +33,11 @@ public class Category{
         this.description = description;
     }
 
-    public static boolean isPresent() {
+    public static Boolean isPresent() {
         return false;
     }
 
-    public static Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -45,7 +45,7 @@ public class Category{
         this.id = id;
     }
 
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
@@ -53,25 +53,11 @@ public class Category{
         this.name = name;
     }
 
-    public static String getDescription() {
+    public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public List<Entry> getEntries() {
-        return entries;
-    }
-
-    public void setEntries(List<Entry> entries) {
-        this.entries = entries;
-    }
-
-    public void persistir() {
-        this.persistir();
-    }
-
-
 }

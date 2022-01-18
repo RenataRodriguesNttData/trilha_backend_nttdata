@@ -13,58 +13,58 @@ import java.util.List;
 
 
 @Service
-    public class EntryService {
+public class EntryService {
 
-        @Autowired
-        private EntryRepository entryrepository;
-
-
-        @Autowired
-        private CategoryRepository categoryRepository;
+    @Autowired
+    private EntryRepository entryrepository;
 
 
-        public List<Entry> findAll(){
-            return entryrepository.findAll();
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-        }
 
-        public Entry validateCategoryById(@RequestParam(required = false) Long Id, Entry entry) {
-            if (entryrepository.findById(entry.getCategoryId()).isPresent())
-                return entryrepository.save(entry);
-            System.out.println("Id não encontrado");
-            return  null;
-        }
+    public List<Entry> findAll(){
+        return entryrepository.findAll();
 
-         public Entry insert(Entry entry) {
+    }
+
+    public Entry validateCategoryById(@RequestParam(required = false) Long Id, Entry entry) {
+        if (entryrepository.findById(entry.getCategoryId()).isPresent())
             return entryrepository.save(entry);
-        }
-
-        public Entry update(Long Id, Entry entry){
-            Entry entity = entryrepository.getOne(Id);
-            updateCreate(entity,entry);
-            return entryrepository.save(entity);
-        }
-
-        private void updateCreate(Entry entity, Entry create) {
-            entity.setName(create.getName());
-            entity.setId(create.getId());
-            entity.setDescription(create.getDescription());
-            entity.setPaid(create.getPaid());
-            entity.setDate(create.getDate());
-            entity.setAmount(create.getAmount());
-            entity.setType(create.getType());
-            entity.setCategoryId(create.getCategoryId());
-            entity.setCategory(create.getCategory());
+        System.out.println("Id não encontrado");
+        return  null;
     }
 
-        public void delete(Long Id){
-            entryrepository.deleteById(Id);
+     public Entry insert(Entry entry) {
+        return entryrepository.save(entry);
     }
 
-
-         public Entry save(EntryService entryService) {
-        return null;
+    public Entry update(Long Id, Entry entry){
+        Entry entity = entryrepository.getOne(Id);
+        updateCreate(entity,entry);
+        return entryrepository.save(entity);
     }
+
+    private void updateCreate(Entry entity, Entry create) {
+        entity.setName(create.getName());
+        entity.setId(create.getId());
+        entity.setDescription(create.getDescription());
+        entity.setPaid(create.getPaid());
+        entity.setDate(create.getDate());
+        entity.setAmount(create.getAmount());
+        entity.setType(create.getType());
+        entity.setCategoryId(create.getCategoryId());
+        entity.setCategory(create.getCategory());
+}
+
+    public void delete(Long Id){
+        entryrepository.deleteById(Id);
+}
+
+
+     public Entry save(EntryService entryService) {
+    return null;
+}
 
     public Entry findById(Long id) {
         return null;
