@@ -1,6 +1,5 @@
 package br.com.financys.controller;
 
-
 import br.com.financys.dto.CategoryDTO;
 import br.com.financys.entities.Category;
 import br.com.financys.service.CategoryService;
@@ -28,21 +27,21 @@ public class CategoryController {
     @ApiOperation("/createDTO")
     @PostMapping("/create")
     public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO categoryDTO, Long Id) {
-        Category categorySave = categoryService.save(categoryDTO.convertToEntity(Id));
-        return ResponseEntity.status(HttpStatus.CREATED).body(CategoryDTO.convertToCategoryDTO(categorySave));
+        Category categorySave = (Category) categoryService.save(categoryDTO.convertToEntity(Id));
+        return (ResponseEntity<CategoryDTO>) ResponseEntity.status(HttpStatus.CREATED).body(CategoryDTO.convertToCategoryDTO(categorySave));
     }
 
     @ApiOperation("/ListarDTO")
     @GetMapping("/Listar")
-    public List<CategoryDTO> list () {
+    public List<Object> list () {
         return categoryService.findAll().stream().map(CategoryDTO::convertToCategoryDTO)
                 .collect(Collectors.toList());
     }
 
     @ApiOperation("/Listar{Id}")
     @GetMapping(name = "/Listar", path = {"/{id}"})
-    public ResponseEntity<CategoryDTO> find(@PathVariable Long id) {
-            Optional<Category> category = categoryService.findById(id);
+    public ResponseEntity<Object> find(@PathVariable Long id) {
+        Optional<Category> category = categoryService.findById(id);
         return category.map(value -> ResponseEntity
                         .ok(CategoryDTO.convertToCategoryDTO(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -53,7 +52,7 @@ public class CategoryController {
     @PutMapping(name = "/UpdateId", path = {"/{id}"})
     public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO categoryDto) {
         Category category = categoryService.update(categoryDto.convertToEntity(id));
-        return ResponseEntity.ok(CategoryDTO.convertToCategoryDTO(category));
+        return (ResponseEntity<CategoryDTO>) ResponseEntity.ok(CategoryDTO.convertToCategoryDTO(category));
     }
 
     @ApiOperation("/delete")
@@ -62,8 +61,6 @@ public class CategoryController {
     public void delete(@PathVariable Long id) {
         categoryService.delete(id);
     }
-
-
 }
 
 

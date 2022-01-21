@@ -1,11 +1,21 @@
 package br.com.financys.entities;
 
 
+import lombok.*;
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Table(name = "ENTRY")
 @Entity
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Entry {
 
     @Id
@@ -35,24 +45,9 @@ public class Entry {
     private Long categoryId;
 
     @ManyToOne
-    @JoinColumn(name = "category")
+    @JoinColumn(name = "category", referencedColumnName = "Id")
     private Category category;
 
-
-    public Entry() {
-    }
-
-    public Entry(Long id, String name, String description, String type, String amount, String date, Boolean paid, Long categoryId, Category category) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.type = type;
-        this.amount = amount;
-        this.date = date;
-        this.paid = paid;
-        this.categoryId = categoryId;
-        this.category = category;
-    }
 
     public static boolean isPresent() {
         return false;
@@ -130,7 +125,18 @@ public class Entry {
         this.category = category;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Entry entry = (Entry) o;
+        return id != null && Objects.equals(id, entry.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
 
 

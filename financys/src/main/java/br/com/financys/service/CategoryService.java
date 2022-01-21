@@ -1,6 +1,8 @@
 package br.com.financys.service;
 
+import br.com.financys.dto.CategoryDTO;
 import br.com.financys.entities.Category;
+import br.com.financys.mapper.CategoryMapper;
 import br.com.financys.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,9 @@ public class CategoryService {
 
     @Autowired
     private  CategoryRepository categoryRepository;
+
+    @Autowired
+    private CategoryMapper mapper;
 
 
     public  List<Category> findAll(){
@@ -46,8 +51,11 @@ public class CategoryService {
         categoryRepository.deleteById(Id);
     }
 
+    public Long idCategoryByName(String name) {
+        return categoryRepository.findByName(name).getId();
+    }
 
-    public Category save(Object convertToEntity) {
+    public Object save(CategoryDTO categoryDTO) {
         return null;
     }
 
@@ -55,7 +63,7 @@ public class CategoryService {
         return null;
     }
 
-    public Category update(Object convertToEntity) {
+    public Category update(CategoryDTO convertToEntity) {
         return null;
     }
 }

@@ -31,12 +31,12 @@ public class EntryController {
     @PostMapping("/{categoryID}")
     public  ResponseEntity<EntryDTO> insert(@PathVariable Long categoryID, @Valid @RequestBody EntryDTO entryDTO) {
         Entry entrySave = entryService.save(entryDTO.convertToEntity(categoryID));
-        return ResponseEntity.status(HttpStatus.CREATED).body(EntryDTO.convertEntryDTO(entrySave));
+        return (ResponseEntity<EntryDTO>) ResponseEntity.status(HttpStatus.CREATED).body(EntryDTO.convertEntryDTO(entrySave));
     }
 
     @ApiOperation("/Listar")
     @GetMapping(name = "/Listar")
-    public List<EntryDTO> list () {
+    public List<Object> list () {
         return entryService.findAll().stream()
                 .map(EntryDTO::convertEntryDTO)
                 .collect(Collectors.toList());
@@ -44,7 +44,7 @@ public class EntryController {
 
     @ApiOperation("/ListarId")
     @GetMapping(name = "/ListarId", path = {"/{id}"})
-    public ResponseEntity<EntryDTO> find(@PathVariable Long id) {
+    public ResponseEntity<Object> find(@PathVariable Long id) {
         Optional<Entry> entry = Optional.ofNullable(entryService.findById(id));
         return entry.map(value -> ResponseEntity
                         .ok(EntryDTO.convertEntryDTO(value)))
@@ -55,7 +55,7 @@ public class EntryController {
     @PutMapping(name = "Update", path = {"/{id}"})
     public ResponseEntity<EntryDTO> update(@PathVariable Long id, @Valid @RequestBody EntryDTO entryDTO) {
         Entry entryUpdate = entryService.update(entryDTO.convertToEntity(id));
-        return ResponseEntity.ok(EntryDTO.convertEntryDTO(entryUpdate));
+        return (ResponseEntity<EntryDTO>) ResponseEntity.ok(EntryDTO.convertEntryDTO(entryUpdate));
     }
 
 
