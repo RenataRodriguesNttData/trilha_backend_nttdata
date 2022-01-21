@@ -1,16 +1,24 @@
 package br.com.financys.service;
 
 
+import br.com.financys.dto.ChartDTO;
+import br.com.financys.dto.EntryDTO;
 import br.com.financys.entities.Entry;
 import br.com.financys.repository.CategoryRepository;
 import br.com.financys.repository.EntryRepository;
+import org.hibernate.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -24,19 +32,40 @@ public class EntryService {
     private CategoryRepository categoryRepository;
 
 
+    private final ModelMapper mapper = new ModelMapper();
+
+    private final List<ChartDTO> chartDTOList = new ArrayList<>();
+
+    public EntryService() {
+    }
+
+
     public List<Entry> findAll(){
         return entryrepository.findAll();
 
     }
 
-     public Entry insert(Entry entry) {
-        return entryrepository.save(entry);
+    public Entry findById(final Long Id) {
+        try {
+            return entryrepository.findById(Id).orElse(null);
+        } catch (NoSuchElementException e) {
+            throw new ObjectNotFoundException(EntryService.class,
+                    "Não encontrado " + Id + " tipo:" +
+                            Entry.class.getName());
+        }
     }
 
+     public Entry insert(Entry entry) {
+         try {
+             return entryrepository.save(entry);
+         } catch (DataIntegrityViolationException e) {
+             throw new DataIntegrityViolationException("Campos obrigatórios vazios");
+         }
+     }
+
+
     public Entry update(Long Id, Entry entry){
-        Entry entity = entryrepository.getOne(Id);
-        updateCreate(entity,entry);
-        return entryrepository.save(entity);
+        return entryrepository.save(entry);
     }
 
     private void updateCreate(Entry entity, Entry create) {
@@ -54,18 +83,30 @@ public class EntryService {
     public void delete(Long Id){
         entryrepository.deleteById(Id);
 }
+    private EntryDTO mapToDTO(Entry entry) {
+        return mapper.map(entry, EntryDTO.class);
+    }
 
-    public ResponseEntity.BodyBuilder ok() {
+    private Entry mapToEntity(EntryDTO entryDTO) {
+        return mapper.map(entryDTO, Entry.class);
+    }
+
+    public List<EntryDTO> getListDTO() {
+        List<Entry> getEntries = entryrepository.findAll();
+        entryrepository.getClass();
+        return getEntries.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    public Entry save(Object convertToEntity) {
         return null;
     }
 
-    public ResponseEntity<Entry> findAllById(String id_validado) {
+    public Entry update(Object convertToEntity) {
         return null;
     }
 
-
-    public boolean validateCategoryById(Long categoryId) {
-        return false;
+    public Collection<Entry> findByPaid(boolean b) {
+        return null;
     }
 }
 

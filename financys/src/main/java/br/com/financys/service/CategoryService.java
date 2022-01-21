@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
 
     @Autowired
     private  CategoryRepository categoryRepository;
-
 
 
     public  List<Category> findAll(){
@@ -47,12 +47,17 @@ public class CategoryService {
     }
 
 
-    public  Category findById(Long id) {
+    public Category save(Object convertToEntity) {
         return null;
     }
 
+    public Optional<Category> findById(Long id) {
+        return null;
+    }
 
-
+    public Category update(Object convertToEntity) {
+        return null;
+    }
 }
 
 
