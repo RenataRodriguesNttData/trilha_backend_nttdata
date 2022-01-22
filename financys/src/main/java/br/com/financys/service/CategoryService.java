@@ -29,6 +29,13 @@ public class CategoryService {
         return categoryRepository.findByName(name);
 
     }
+    public Category findById(Long Id) {
+        if (categoryRepository.findById(Id).isPresent()) {
+            return categoryRepository.findById(Id).get();
+        } else {
+            return null;
+        }
+    }
 
     public  Category insert(Category category) {
         return categoryRepository.save(category);
@@ -59,9 +66,6 @@ public class CategoryService {
         return null;
     }
 
-    public Optional<Category> findById(Long id) {
-        return null;
-    }
 
     public Category update(CategoryDTO convertToEntity) {
         return null;

@@ -80,4 +80,8 @@ public class Category {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    public String getType() {
+        return null;
+    }
 }

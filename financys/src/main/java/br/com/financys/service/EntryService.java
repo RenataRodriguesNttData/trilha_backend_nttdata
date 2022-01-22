@@ -1,24 +1,26 @@
 package br.com.financys.service;
 
 
+
 import br.com.financys.dto.ChartDTO;
 import br.com.financys.dto.EntryDTO;
+import br.com.financys.entities.Category;
 import br.com.financys.entities.Entry;
+import br.com.financys.mapper.EntryMapper;
 import br.com.financys.repository.CategoryRepository;
 import br.com.financys.repository.EntryRepository;
 import org.hibernate.ObjectNotFoundException;
-import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 
-
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -31,18 +33,17 @@ public class EntryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-
-    private final ModelMapper mapper = new ModelMapper();
-
-    private final List<ChartDTO> chartDTOList = new ArrayList<>();
-
-    public EntryService() {
-    }
+    @Autowired
+    private EntryMapper mapper;
 
 
     public List<Entry> findAll(){
         return entryrepository.findAll();
 
+    }
+
+    public boolean validateCategoryById(long categoryId){
+        return categoryRepository.findById(categoryId).isPresent();
     }
 
     public Entry findById(final Long Id) {
@@ -53,6 +54,10 @@ public class EntryService {
                     "Não encontrado " + Id + " tipo:" +
                             Entry.class.getName());
         }
+    }
+
+    public List<Entry> findAllByPaid(boolean paid) {
+        return entryrepository.findAllByPaid(paid);
     }
 
      public Entry insert(Entry entry) {
@@ -83,29 +88,36 @@ public class EntryService {
     public void delete(Long Id){
         entryrepository.deleteById(Id);
 }
-    private EntryDTO mapToDTO(Entry entry) {
-        return mapper.map(entry, EntryDTO.class);
+    public List<ChartDTO> grafico() {
+        List<ChartDTO> retorno = new ArrayList<>();
+        List<Category> categoryList =  categoryRepository.findAll();
+        BigDecimal total = BigDecimal.ZERO;
+        for (int i = 0 ; i <= categoryList.size()-1; i++){
+
+            for (int j = 0 ; j <= categoryList.get(i).getEntries().size()-1; j++){
+                total = total.add(categoryList.get(i).getEntries().get(j).getamount());
+            }
+            retorno.add(new ChartDTO(categoryList.get(i).getName(),
+                    categoryList.get(i).getType(),
+                    total));
+        }
+        return retorno;
     }
 
-    private Entry mapToEntity(EntryDTO entryDTO) {
-        return mapper.map(entryDTO, Entry.class);
-    }
-
-    public List<EntryDTO> getListDTO() {
-        List<Entry> getEntries = entryrepository.findAll();
-        entryrepository.getClass();
-        return getEntries.stream().map(this::mapToDTO).collect(Collectors.toList());
-    }
 
     public Entry save(Object convertToEntity) {
         return null;
     }
 
-    public Entry update(Object convertToEntity) {
+    public Collection<Entry> findByPaid(boolean b) {
         return null;
     }
 
-    public Collection<Entry> findByPaid(boolean b) {
+    public List<EntryDTO> getListDTO() {
+        return null;
+    }
+
+    public Entry update(Object convertToEntity) {
         return null;
     }
 }

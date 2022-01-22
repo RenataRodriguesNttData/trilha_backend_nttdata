@@ -4,21 +4,18 @@ package br.com.financys.controller;
 import br.com.financys.dto.EntryDTO;
 import br.com.financys.entities.Entry;
 import br.com.financys.service.EntryService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-@Api("Entries")
+
 @RestController
 @RequestMapping("/entries")
 public class EntryController {
@@ -27,14 +24,15 @@ public class EntryController {
     private EntryService entryService;
 
 
-    @ApiOperation("/create")
+
     @PostMapping("/{categoryID}")
-    public  ResponseEntity<EntryDTO> insert(@PathVariable Long categoryID, @Valid @RequestBody EntryDTO entryDTO) {
-        Entry entrySave = entryService.save(entryDTO.convertToEntity(categoryID));
-        return (ResponseEntity<EntryDTO>) ResponseEntity.status(HttpStatus.CREATED).body(EntryDTO.convertEntryDTO(entrySave));
+    public ResponseEntity<Object> create(@RequestBody EntryDTO id) {
+        if (entryService.validateCategoryById(id.getCategoryId().getId()))
+            return ResponseEntity.ok(entryService.save(id));
+        return ResponseEntity.badRequest().body("Categoria inexistente");
     }
 
-    @ApiOperation("/Listar")
+
     @GetMapping(name = "/Listar")
     public List<Object> list () {
         return entryService.findAll().stream()
@@ -42,7 +40,7 @@ public class EntryController {
                 .collect(Collectors.toList());
     }
 
-    @ApiOperation("/ListarId")
+
     @GetMapping(name = "/ListarId", path = {"/{id}"})
     public ResponseEntity<Object> find(@PathVariable Long id) {
         Optional<Entry> entry = Optional.ofNullable(entryService.findById(id));
@@ -51,29 +49,27 @@ public class EntryController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @ApiOperation(value = "Update")
-    @PutMapping(name = "Update", path = {"/{id}"})
-    public ResponseEntity<EntryDTO> update(@PathVariable Long id, @Valid @RequestBody EntryDTO entryDTO) {
-        Entry entryUpdate = entryService.update(entryDTO.convertToEntity(id));
-        return (ResponseEntity<EntryDTO>) ResponseEntity.ok(EntryDTO.convertEntryDTO(entryUpdate));
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Entry> update(@PathVariable Long id, @RequestBody Entry update) {
+        return ResponseEntity.ok(entryService.update(id,update));
     }
 
 
 
-    @ApiOperation("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(name = "delete", path = {"/{id}"})
     public void delete(@PathVariable Long id) {entryService.delete(id);
     }
 
-    @ApiOperation("/paid")
+
     @GetMapping(value = "/paid")
     public ResponseEntity<Collection<Entry>> findByPaid() {
         Collection<Entry> entries = entryService.findByPaid(true);
         return ResponseEntity.ok(entries);
     }
 
-    @ApiOperation(value = "/RetornaGráfico")
+
     @GetMapping("/chart")
     public List<EntryDTO> getDTO() {
         return entryService.getListDTO();

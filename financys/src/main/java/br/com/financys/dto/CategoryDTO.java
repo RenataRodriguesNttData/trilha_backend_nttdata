@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CategoryDTO {
 
-    private Long id;
+    private String type;
 
     private String name;
 

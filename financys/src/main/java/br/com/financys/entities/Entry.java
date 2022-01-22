@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 
@@ -136,6 +137,11 @@ public class Entry {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+
+    public BigDecimal getamount() {
+        return null;
     }
 }
 
