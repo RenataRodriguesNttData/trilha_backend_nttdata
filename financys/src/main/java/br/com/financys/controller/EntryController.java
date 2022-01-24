@@ -38,9 +38,9 @@ public class EntryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Entry> findById(@PathVariable Long Id){
-        Entry validateCategoryById = entryService.findById(Id);
-        return ResponseEntity.ok().body(validateCategoryById);
+    public ResponseEntity<Entry> findById(@PathVariable Long id){
+        Entry  entry= entryService.findById(id);
+        return ResponseEntity.ok().body(entry);
     }
 
 

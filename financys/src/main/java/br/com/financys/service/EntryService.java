@@ -73,7 +73,7 @@ public class EntryService {
     }
 
     public Entry findById(Long id) {
-        return null;
+        return entryrepository.findById(id).get();
     }
 }
 
