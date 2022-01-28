@@ -1,19 +1,22 @@
 package br.com.financys.dto;
 
+
+import br.com.financys.entities.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class CategoryDTO {
 
-    private String type;
 
     private String name;
-
     private String description;
 
 
+    public Category convertToEntity(Long id) {
+        return null;
+    }
 }

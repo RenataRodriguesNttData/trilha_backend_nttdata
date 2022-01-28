@@ -1,14 +1,15 @@
 package br.com.financys.controller;
 
 
+import br.com.financys.dto.CategoryDTO;
 import br.com.financys.entities.Category;
+import br.com.financys.mapper.CategoryMapper;
 import br.com.financys.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -19,13 +20,15 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    private CategoryDTO categoryDTO;
+
+    private CategoryMapper categoryMapper;
+
 
     @PostMapping("/create")
-    public ResponseEntity<Category> insert(@RequestBody Category category){
-        Category categoryReturn  = categoryService.insert(category);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(category.getId()).toUri();
-        return ResponseEntity.created(uri).body(categoryReturn);
+    public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO categoryDTO, Long Id) {
+        Category categorySave = (Category) categoryService.save(categoryDTO.convertToEntity(Id));
+        return ResponseEntity.ok().body(categoryDTO);
     }
 
     @GetMapping
@@ -41,9 +44,9 @@ public class CategoryController {
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<Category> update(@PathVariable("id") Long id, @RequestBody Category category) {
-        categoryService.updateCategory(category);
-        return ResponseEntity.ok().body(category);
+    public ResponseEntity<Category> update(@PathVariable("id") Long id, @RequestBody Category categoryDTO) {
+        categoryService.updateCategory(categoryDTO);
+        return ResponseEntity.ok().body(categoryDTO);
 
     }
 

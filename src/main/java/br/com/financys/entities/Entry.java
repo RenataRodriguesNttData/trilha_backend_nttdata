@@ -1,7 +1,10 @@
 package br.com.financys.entities;
 
 
+import br.com.financys.dto.EntryDTO;
+
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 
 @Table(name = "ENTRY")
@@ -10,25 +13,25 @@ public class Entry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "description")
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "type")
     private String type;
 
-    @Column(nullable = false)
-    private String amount;
+    @Column(name = "amount")
+    private BigDecimal amount;
 
-    @Column(nullable = false)
+    @Column(name = "date")
     private String date;
 
-    @Column(nullable = false)
+    @Column(name = "paid")
     private Boolean paid;
 
 
@@ -39,7 +42,7 @@ public class Entry {
     public Entry() {
     }
 
-    public Entry(Long id, String name, String description, String type, String amount, String date, Boolean paid, Category category) {
+    public Entry(Long id, String name, String description, String type, BigDecimal amount, String date, Boolean paid, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -50,8 +53,8 @@ public class Entry {
         this.category = category;
     }
 
-    public Long getId() {
-        return id;
+    public EntryDTO getId() {
+        return new EntryDTO();
     }
 
     public void setId(Long id) {
@@ -82,11 +85,11 @@ public class Entry {
         this.type = type;
     }
 
-    public String getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

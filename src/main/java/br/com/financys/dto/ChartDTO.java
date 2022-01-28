@@ -7,15 +7,13 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class ChartDTO {
 
     private String name;
-    private String type;
-    private String total;
-
+    private BigDecimal total;
 
     public ChartDTO(String name, String type, BigDecimal total) {
     }

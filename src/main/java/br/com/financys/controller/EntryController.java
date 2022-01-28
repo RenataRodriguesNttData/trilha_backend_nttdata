@@ -2,14 +2,15 @@ package br.com.financys.controller;
 
 
 import br.com.financys.dto.ChartDTO;
+import br.com.financys.dto.EntryDTO;
 import br.com.financys.entities.Entry;
+import br.com.financys.mapper.EntryMapper;
 import br.com.financys.service.EntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -21,16 +22,16 @@ public class EntryController {
     @Autowired
     private EntryService entryService;
 
+    private EntryDTO entryDTO;
 
-    @PostMapping("/create")
-    public ResponseEntity<Entry> create(@RequestBody Entry entry) throws Exception {
-        if (entryService.validateCategoryById(entry)){
-            URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(entry.getId()).toUri();
-            return ResponseEntity.created(uri).body(entry);
-        }
-            throw new Exception("Id not exist");
-        }
+    private EntryMapper entryMapper;
+
+
+    @PostMapping
+    public ResponseEntity<Object> create(@RequestBody @Valid EntryDTO entryDTO) {
+        entryService.validateCategoryById(entryDTO.getCategoryId().equals(entryDTO));
+        return ResponseEntity.ok(entryService.save(entryDTO));
+    }
 
     @GetMapping
     public ResponseEntity<List<Entry>> findAll(){
@@ -51,10 +52,8 @@ public class EntryController {
 
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<Entry> update(@PathVariable("id") Long id, @RequestBody Entry entry) {
-        Entry update = entryService.update(id, entry);
-        return ResponseEntity.ok().body(update);
-
+    public ResponseEntity<Entry> update(@PathVariable Long id, @RequestBody EntryDTO entryDTO) {
+        return ResponseEntity.ok(entryService.update(id,entryDTO));
     }
 
     @DeleteMapping("/delete/{id}")

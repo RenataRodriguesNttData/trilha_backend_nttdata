@@ -1,5 +1,6 @@
 package br.com.financys.service;
 
+import br.com.financys.dto.CategoryDTO;
 import br.com.financys.entities.Category;
 import br.com.financys.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ public class CategoryService {
     @Autowired
     private  CategoryRepository categoryRepository;
 
+    private CategoryDTO categoryDTO;
 
 
     public  List<Category> findAll(){
@@ -25,12 +27,12 @@ public class CategoryService {
 
     }
 
-    public  Category insert(Category category) {
-        return categoryRepository.save(category);
+    public  Category insert(Category categoryDTO) {;
+        return categoryRepository.save(categoryDTO);
     }
 
     public Category update(Long Id, Category category){
-        Category entity = categoryRepository.getOne(Id);
+        Category entity = categoryRepository.getById(category.getId());
         updateCategory(category);
         return categoryRepository.save(entity);
     }
@@ -52,7 +54,9 @@ public class CategoryService {
     }
 
 
-
+    public Object save(Category convertToEntity) {
+        return null;
+    }
 }
 
 

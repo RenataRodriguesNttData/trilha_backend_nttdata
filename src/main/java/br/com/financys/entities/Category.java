@@ -1,6 +1,7 @@
 package br.com.financys.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import br.com.financys.dto.EntryDTO;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,17 +13,17 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(nullable = false)
+    @Column( name = "description")
     private String description;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    private List<Entry> entries;
+    @OneToMany(mappedBy = "category")
+    private List<Entry>entries;
 
     public Category() {
     }
@@ -68,5 +69,8 @@ public class Category {
 
     public String getType() {
         return null;
+    }
+
+    public void setId(EntryDTO id) {
     }
 }
